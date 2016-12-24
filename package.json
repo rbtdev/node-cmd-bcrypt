@@ -1,6 +1,6 @@
 {
   "name": "@rbtdev/passwdjs",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "description": "A simple bycryptjs based command line password hasher",
   "author": "Rob Thuleen <rob.thuleen@gmail.com>",
   "license": "MIT",

@@ -10,7 +10,16 @@ options
     .option('-r, --rounds <n>', "Complexity factor for salt generation [10]", parseInt, 10)
     .option('-p, --plaintext', "Include plaintext at beginning of line, sepated by ' '")
     .option('-s, --separator <separator>', "Use as a separator between plaintext and hash [':']")
-    .parse(process.argv);
+
+options.on('--help', function () {
+    console.log('  Examples:');
+    console.log('');
+    console.log('    $ cat file.txt | passwdjs -r 10 -p -s " "');
+    console.log('    $ echo "password" | passwdjs -r 15');
+    console.log('');
+});
+
+options.parse(process.argv);
 
 var rounds = options.rounds || 10;
 var plaintext = options.plaintext;
