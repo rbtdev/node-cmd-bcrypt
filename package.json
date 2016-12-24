@@ -1,11 +1,11 @@
 {
     "name": "@rbtdev/node-cmd-bcrypt",
-    "version": "0.0.5",
+    "version": "0.0.6",
     "description": "A simple bycryptjs based command line password hasher",
     "author": "Rob Thuleen <rob.thuleen@gmail.com>",
     "license": "MIT",
     "bin": {
-        "passwdjs": "index.js"
+        "passwdjs": "passwdjs.js"
     },
     "dependencies": {
         "bcryptjs": "^2.4.0",
@@ -32,7 +32,6 @@
         "mocha": "^3.2.0"
     },
     "directories": {},
-    "main": "index.js",
     "scripts": {
         "test": "mocha"
     }
