@@ -1,11 +1,12 @@
 {
   "name": "@rbtdev/passwdjs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "A simple bycryptjs based command line password hasher",
-  "main": "index.js",
-  "scripts": {},
   "author": "Rob Thuleen <rob.thuleen@gmail.com>",
   "license": "MIT",
+  "bin": {
+    "passwdjs": "bin/passwd.js"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.0",
     "commander": "^2.9.0"
@@ -30,5 +31,9 @@
     "chai": "^3.5.0",
     "mocha": "^3.2.0"
   },
-  "directories": {}
+  "directories": {},
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  }
 }

@@ -7,7 +7,7 @@ options
     .usage('[options] <password>')
     .option('-r, --rounds <n>', "Complexity factor for salt generation [10]", parseInt, 10)
     .parse(process.argv);
-    
+
 var passwd = options.args[0];
 var rounds = options.rounds;
 if (!passwd) return options.help();;
