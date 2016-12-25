@@ -13,7 +13,7 @@ $ npm install -g @rbtdev/node-cmd-bcrypt
 $ cat password_file.txt | passwdjs -r 12 -p -s "-" > hashmap.txt
 $ passwdjs --help
 
-Usage: index [options]
+Usage: passwdjs [options]
 
   Reads stdin and uses bcrypt to hash each line. Writes hash values to stdout one per line in the same order as the input lines.
 
