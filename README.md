@@ -47,7 +47,7 @@ $ npm install --save @rbtdev/node-cmd-bcrypt
 
 ```js
 
-var passwdjs = require(@rbtdev/node-cmd-bcrypt);
+var passwdjs = require('@rbtdev/node-cmd-bcrypt');
 
 var passwords = [
   'password1',
