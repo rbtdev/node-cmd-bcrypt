@@ -9,7 +9,7 @@ output of other commands.  The function accepts an array of strings, and an opti
 ##Usage
 ###Command Line Utility
 ```
-$ npm install -g node-cmd-bcrypt
+$ npm install -g @rbtdev/node-cmd-bcrypt
 $ cat password_file.txt | passwdjs -r 12 -p -s "-" > hashmap.txt
 $ passwdjs --help
 
@@ -32,7 +32,14 @@ Usage: index [options]
 
 ```
 ###As a required module
+
+####Installation
 ```js
+$ npm install --save @rbtdev/node-cmd-bcrypt
+```
+
+```js
+
 var passwdjs = require(@rbtdev/node-cmd-bcrypt);
 
 var passwords = [
