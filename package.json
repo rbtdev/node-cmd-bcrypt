@@ -4,8 +4,9 @@
     "description": "A simple bycryptjs based command line password hasher",
     "author": "Rob Thuleen <rob.thuleen@gmail.com>",
     "license": "MIT",
+    "main": "index.js",
     "bin": {
-        "passwdjs": "./bin/passwdjs.js"
+        "passwdjs": "index.js"
     },
     "dependencies": {
         "async": "^2.1.4",

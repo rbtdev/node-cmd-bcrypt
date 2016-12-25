@@ -1,4 +1,4 @@
-var passwdjs = require('../bin/passwdjs');
+var passwdjs = require('../');
 var bcrypt = require('bcryptjs');
 var expect = require('chai').expect;
 
