@@ -1,5 +1,10 @@
 [![Build Status](https://travis-ci.org/rbtdev/node-cmd-bcrypt.svg?branch=v0.0.9)](https://travis-ci.org/rbtdev/node-cmd-bcrypt)
-# node-cmd-bcrypt
+#node-cmd-bcrypt
+A simple utility to hash plaintext arrays or line delimited text files into bcrypt hashes.  Provides both
+a utility for command line use, and a module function for use in your application.
+The command line utility reads from stdin and outputs to stdout, and includes several options for specifying
+bcrypt complexity, and inclusion of the plaintext in the output. Easily used as a 'pipe' to process the 
+output of other commands.  The function accepts an array of strings, and an options object.
 
 ##Usage
 ###Command Line Utility
