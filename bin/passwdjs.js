@@ -7,12 +7,14 @@ var command = require('commander')
 command
     .version(version)
     .usage('[options]')
-    .description("Reads stdin and uses bcrypt to hash each line. Writes " +
-        "hash values to stdout one per line in the same order as the input lines.")
+    .description(
+        "Reads stdin and uses bcrypt to hash each line.  Writes each hash" +
+        "value to stdout in the order of the original plaintext.  If the '-j' " +
+        "option is used, the hash values are placed into a JSON object with " +
+        "the original plaintext as the value of the hash.")
 
 .option('-r, --rounds <n>', "Complexity factor for salt generation [10]", parseInt, 10)
-    .option('-p, --plaintext', "Include plaintext at beginning of line, sepated by ' '")
-    .option('-s, --separator <separator>', "Use as a separator between plaintext and hash [':']")
+    .option('-j, --json', 'Output a JSON object which is a map of plaintext to hash')
 
 command.on('--help', function () {
     console.log('  Examples:');
@@ -26,8 +28,7 @@ command.parse(process.argv);
 
 var options = {
     rounds: parseInt(command.rounds) || 10,
-    plaintext: command.plaintext || false,
-    separator: command.separator || ''
+    json: command.json || false
 }
 
 var data = "";
@@ -42,9 +43,12 @@ function hashData() {
     var lines = data.split('\n');
     passwdjs(lines, options)
         .on('line', function (hashed) {
-            process.stdout.write(hashed + '\n');
+            if (!options.json) process.stdout.write(hashed + '\n');
         })
-        .on('done', function (results) {
+        .on('done', function (result) {
+            if (options.json) {
+                process.stdout.write(JSON.stringify(result, null, 2));
+            }
             process.exit(0);
         })
         .on('error', function (err) {

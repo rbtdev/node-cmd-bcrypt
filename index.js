@@ -11,18 +11,25 @@ function passwdjs(passwd, options) {
         plaintext: false
     }
     async.mapSeries(lines, hash, function (err, results) {
-        e.emit('done', results);
+        var result = results;
+        if (opts.json) {
+            result = {};
+            lines.forEach(function (line, index) {
+                var hash = results[index];
+                result[hash] = hash ? line : undefined;
+            });
+        }
+        e.emit('done', result);
     })
 
     function hash(line, cb) {
+        if (line.length === 0) return async.setImmediate(cb, null, null);
         bcrypt.genSalt(opts.rounds, function (err, salt) {
             if (err) return cb(err);
-            if (line.length === 0) return cb();
             bcrypt.hash(line, salt, function (err, hashed) {
                 if (err) return cb(err);
-                var out = (opts.plaintext ? (line + opts.separator) : "") + hashed;
-                e.emit('line', out);
-                return cb(null, out);
+                e.emit('line', hashed);
+                return cb(null, hashed);
             });
         });
     }
