@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+
 var passwdjs = require('../');
 var version = require('../package.json').version;
 var command = require('commander')
