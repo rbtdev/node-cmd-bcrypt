@@ -60,34 +60,32 @@ $ passwdjs --help
 ```js
 $ npm install --save @rbtdev/node-cmd-bcrypt
 ```
-
 ```js
-
 var passwdjs = require('@rbtdev/node-cmd-bcrypt');
 
 var passwords = [
-  'password1',
-  'password2',
-  'password3'
+    'password1',
+    'password2',
+    'password3'
 ]
- 
+
 var opts = {
-  rounds: 12,       // rounds to use (complexity).  see bcryptjs for details. 
-  plaintext: true,  // true to include original plaintext at beginning of output line [false]
-  separator: '-'    // separator between plaintext and hash in output line [':']
+    rounds: 12, // rounds to use (complexity).  see bcryptjs for details. 
+    json: true, // true to include original plaintext at beginning of output line [false]
 };
 
 passwdjs(passwords, opts)
-  .on('line', doSomethingWithLine)
-  .on('done', doSomethingWithResultsArray);
-  
-function doSomethingWithLine (line) {
-  console.log('line =', line);
+    .on('line', doSomethingWithLine)
+    .on('done', doSomethingWithResultsObj);
+
+function doSomethingWithLine(line) {
+    console.log('line =', line);
 };
-  
-function doSomethingWithResultsArray (results) {
-  results.forEach(function (result) {
-    console.log('hash =', result);
-  });
+
+function doSomethingWithResultsObj(results) {
+    for (var hash in results) {
+        var plaintext = results[hash]
+        console.log("the bcrypt hash for " + plaintext + " is " + hash);
+    };
 }
 ```
