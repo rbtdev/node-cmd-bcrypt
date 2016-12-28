@@ -8,7 +8,7 @@ function passwdjs(passwd, options) {
     var lines = Array.isArray(passwd) ? passwd : [].push(passwd);
     var opts = options ? options : {
         rounds: 10,
-        plaintext: false
+        json: false
     }
     async.mapSeries(lines, hash, function (err, results) {
         var result = results;
