@@ -1,6 +1,6 @@
 {
   "name": "@rbtdev/node-cmd-bcrypt",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "description": "A simple bycryptjs based command line password hasher",
   "author": "Rob Thuleen <rob.thuleen@gmail.com>",
   "license": "MIT",
