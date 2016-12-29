@@ -1,7 +1,10 @@
 language: node_js
 
 node_js:
-  - stable
+  - "stable"
+  - "6.9.2"
+  - "4.0.0"
+  - "0.12"
 
 install:
   - npm install

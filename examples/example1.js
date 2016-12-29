@@ -8,7 +8,7 @@ var passwords = [
 
 var opts = {
     rounds: 12, // rounds to use (complexity).  see bcryptjs for details. 
-    json: true, // true to include original plaintext at beginning of output line [false]
+    json: true, // true to output JSON object with hashes and passwords
 };
 
 passwdjs(passwords, opts)
