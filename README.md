@@ -71,6 +71,7 @@ $ passwdjs --help
 ```js
 $ npm install --save @rbtdev/node-cmd-bcrypt
 ```
+Hash an array of passwords, and return results in an object
 
 ```js
 var passwdjs = require('@rbtdev/node-cmd-bcrypt');
@@ -90,6 +91,71 @@ var opts = {
  * Hash array of passwords, result in object
  */
 passwdjs(passwords, opts)
+    .on('line', doSomethingWithLine)
+    .on('done', doSomethingWithResultsObj)
+    .on('error', doSomethingWithError)
+
+function doSomethingWithLine(line) {
+    console.log('line =', line);
+};
+
+function doSomethingWithResultsObj(results) {
+    for (var hash in results) {
+        var plaintext = results[hash]
+        console.log("the bcrypt hash for " + plaintext + " is " + hash);
+    };
+}
+
+function doSomethingWithError(err) {
+    console.log(err);
+}
+```
+Hash a file of passwords (one per line) and return results in an array
+
+```js
+var passwdjs = require('@rbtdev/node-cmd-bcrypt');
+
+var opts = {
+    rounds: 12, // rounds to use (complexity).  see bcryptjs for details. 
+};
+
+/**
+ * Hash file of passwords, result in array
+ */
+passwdjs('test/test.txt', opts)
+    .on('line', doSomethingWithLine)
+    .on('done', doSomethingWithResultsArray)
+    .on('error', doSomethingWithError)
+
+
+function doSomethingWithLine(line) {
+    console.log('line =', line);
+};
+
+function doSomethingWithResultsArray(results) {
+    results.forEach(function (result) {
+        console.log("Hash = " + result);
+    })
+}
+
+function doSomethingWithError(err) {
+    console.log(err);
+}
+```
+Hash a file of passwords (one per line) and return results in an object
+
+```js
+var passwdjs = require('@rbtdev/node-cmd-bcrypt');
+
+var opts = {
+    rounds: 12, // rounds to use (complexity).  see bcryptjs for details. 
+    json: true, // true to output JSON object with hashes and passwords
+};
+
+/**
+ * Hash file of passwords, result in object
+ */
+passwdjs('test/test.txt', opts)
     .on('line', doSomethingWithLine)
     .on('done', doSomethingWithResultsObj)
     .on('error', doSomethingWithError)
