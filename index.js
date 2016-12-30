@@ -1,11 +1,24 @@
 var bcrypt = require('bcryptjs');
 var EventEmitter = require('events').EventEmitter;
 var async = require('async');
+var fs = require('fs');
 
-function passwdjs(passwd, options) {
+function passwdjs(arg, options) {
     var e = new EventEmitter();
-    if (!passwd) return setImmediate(e.emit('error', new Error("Invalid passwd parameter")))
-    var lines = Array.isArray(passwd) ? passwd : [].push(passwd);
+    if (!arg) return setImmediate(e.emit('error', new Error("Invalid passwd parameter")))
+    var lines = null;
+    if (typeof arg === 'string') {
+        try {
+            lines = fs.readFileSync(arg).toString().split('\n');
+        }
+        catch (ex) {
+            setImmediate(function () {
+                e.emit("error", ex)
+            });
+            return e;
+        }
+    }
+    else lines = Array.isArray(arg) ? arg : [].push(arg);
     var opts = options ? options : {
         rounds: 10,
         json: false
@@ -16,7 +29,7 @@ function passwdjs(passwd, options) {
             result = {};
             lines.forEach(function (line, index) {
                 var hash = results[index];
-                result[hash] = hash ? line : undefined;
+                if (hash) result[hash] = line;
             });
         }
         e.emit('done', result);

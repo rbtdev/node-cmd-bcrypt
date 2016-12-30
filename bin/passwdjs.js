@@ -15,7 +15,8 @@ command
     .description("Uses bcryptjs to hash each passoword provided or reads lines from stdin if no passwords are provided.")
     .option('-r, --rounds <n>', "Complexity factor for salt generation [10]", parseInt, 10)
     .option('-j, --json', 'Output a JSON object which is a map of plaintext to hash')
-    .action(hash)
+    .option('-f, --file <filename>', 'Read lines from the given file for passwords')
+.action(hash)
 
 command.on('--help', function () {
     console.log('  Examples:');
@@ -43,6 +44,15 @@ command.on('--help', function () {
     console.log('      "$2a$12$86N8t.Ha/RbhM.VYaFJI6uUbZI3g8f93A2pmWz7AAReZ8aAYQm2KO": "password5"');
     console.log('    }');
     console.log('');
+    console.log('    $ passwdjs hash -r 12 -j -f passwords.txt');
+    console.log('    {');
+    console.log('      "$2a$12$ErsnLyXSXaupErd5imARB.S6sl6QD8m0a.Z0ECGA5KsqiEVJs80W2": "password1",');
+    console.log('      "$2a$12$6k/WRP17ba/XfewrzpOz5OJIIbiz12ocHbDJvRpk.USFTioUCnOem": "password2",');
+    console.log('      "$2a$12$hkelc1Xu.jFq3UpRmidpCOvZcUEWIpKks0ZewkmArjLSxnCwhoDJ2": "password3",');
+    console.log('      "$2a$12$WK1KVKmiH.heNTpUwR2IcuXyzCjrO64Nun/A5R11DavKcc48h0Epu": "password4",');
+    console.log('      "$2a$12$86N8t.Ha/RbhM.VYaFJI6uUbZI3g8f93A2pmWz7AAReZ8aAYQm2KO": "password5"');
+    console.log('    }');
+    console.log('');
     console.log('    $ echo "password" | passwdjs hash -r 15');
     console.log('    $2a$15$mT4C4CHQuTcumZG74JlGhen2e.b9yAWVtIFREq9Pge6dDXUkHiZPG');
     console.log('');
@@ -52,10 +62,11 @@ command.parse(process.argv);
 function hash(passwords, opts) {
     var options = {
         rounds: opts.rounds || 10,
-        json: opts.json || false
+        json: opts.json || false,
     }
-
-    if (passwords.length === 0) {
+    if (opts.file) {
+        hashData(opts.file, options);
+    } else if (passwords.length === 0) {
         readStdIn(hashData, options);
     } else {
         hashData(passwords, options);
@@ -86,7 +97,7 @@ function hashData(lines, options) {
             process.exit(0);
         })
         .on('error', function (err) {
-            process.stderr.write(err);
+            process.stderr.write(err.toString() + '\n');
             process.exit(1);
         })
 }

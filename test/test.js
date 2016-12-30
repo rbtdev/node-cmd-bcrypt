@@ -9,20 +9,18 @@ var hash = null;
 var hashLines = null;
 var hashResult = null;
 var lineCount = 0;
-var passwords = null;
+var arg = null;
 
 
-
-
-describe("hash array of passwords", function (done) {
+describe("hash array of passwords, emit line event", function (done) {
     before(function (done) {
-        reset();
+        reset(false, false);
         run(done);
     })
 
     it("Should emit a 'line' event for each password", function () {
         expect(hash).to.be.a.string;
-        expect(lineCount).to.equal(passwords.length);
+        expect(lineCount).to.equal(arg.length);
     });
 
     it("Should emit a 'done' event", function () {
@@ -32,7 +30,32 @@ describe("hash array of passwords", function (done) {
         expect(hashResult).to.be.an("array")
     })
     it("Should have the right number of hashes", function () {
-        expect(hashResult.length).to.equal(passwords.length);
+        expect(hashResult.length).to.equal(arg.length);
+    })
+    it("Should match the hashes from the line event", function () {
+        expect(hashLines).to.deep.equal(hashResult);
+    })
+})
+
+describe("hash file of passwords, emit line event", function (done) {
+    before(function (done) {
+        reset(false, false);
+        run(done);
+    })
+
+    it("Should emit a 'line' event for each password", function () {
+        expect(hash).to.be.a.string;
+        expect(lineCount).to.equal(hashResult.length);
+    });
+
+    it("Should emit a 'done' event", function () {
+        expect(doneEvent).to.be.true;
+    })
+    it("Should return array of hashes", function () {
+        expect(hashResult).to.be.an("array")
+    })
+    it("Should have the right number of hashes", function () {
+        expect(hashResult.length).to.equal(lineCount);
     })
     it("Should match the hashes from the line event", function () {
         expect(hashLines).to.deep.equal(hashResult);
@@ -41,7 +64,7 @@ describe("hash array of passwords", function (done) {
 
 describe("hash array of passwords, return json obj", function (done) {
     before(function (done) {
-        reset('json');
+        reset(false, true);
         run(done);
     })
 
@@ -63,8 +86,34 @@ describe("hash array of passwords, return json obj", function (done) {
         })
 });
 
+
+describe("hash file of passwords, return json obj", function (done) {
+    before(function (done) {
+        reset(true, true);
+        run(done);
+    })
+
+    it("Should emit a 'done' event", function () {
+        expect(doneEvent).to.be.true;
+
+    });
+
+    it("Should return an object", function () {
+        expect(hashResult).to.be.an("object");
+    })
+
+    it("Should contain valid hashes for each password",
+        function () {
+            for (hash in hashResult) {
+                var match = bcrypt.compareSync(hashResult[hash], hash)
+                expect(match).to.be.true;
+            }
+        })
+});
+
+
 function run(done) {
-    passwdjs(passwords, opts)
+    passwdjs(arg, opts)
         .on('line', gotLine)
         .on('done', gotDone);
 
@@ -78,17 +127,19 @@ function run(done) {
         hashResult = hashed;
         done();
     }
+
 }
 
-function reset(json) {
+
+function reset(file, json) {
     lineEvent = false;
     doneEvent = false;
     hash = null;
     hashLines = [];
     hashResult = null;
     lineCount = 0;
-
-    passwords = [
+    
+    arg = [
         'passwd1',
         'passwd2',
         'passwd3',
@@ -100,4 +151,5 @@ function reset(json) {
         json: json
     }
 
+    if (file) arg = 'test/test.txt';
 }
