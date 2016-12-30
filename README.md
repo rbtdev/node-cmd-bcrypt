@@ -1,5 +1,6 @@
 [![Build Status](https://travis-ci.org/rbtdev/node-cmd-bcrypt.svg?branch=v0.0.9)](https://travis-ci.org/rbtdev/node-cmd-bcrypt)
 [![npm version](https://badge.fury.io/js/%40rbtdev%2Fnode-cmd-bcrypt.svg)](https://badge.fury.io/js/%40rbtdev%2Fnode-cmd-bcrypt)
+[![Coverage Status](https://coveralls.io/repos/github/rbtdev/node-cmd-bcrypt/badge.svg?branch=master)](https://coveralls.io/github/rbtdev/node-cmd-bcrypt?branch=master)
 
 #node-cmd-bcrypt
 A simple utility to hash plaintext arrays or line delimited text files into bcrypt hashes.  Provides both
