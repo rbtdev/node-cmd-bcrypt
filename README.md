@@ -1,16 +1,16 @@
-[![Build Status](https://travis-ci.org/rbtdev/node-cmd-bcrypt.svg?branch=v0.0.9)](https://travis-ci.org/rbtdev/node-cmd-bcrypt)
 [![npm version](https://badge.fury.io/js/%40rbtdev%2Fnode-cmd-bcrypt.svg)](https://badge.fury.io/js/%40rbtdev%2Fnode-cmd-bcrypt)
+[![Build Status](https://travis-ci.org/rbtdev/node-cmd-bcrypt.svg?branch=v0.0.9)](https://travis-ci.org/rbtdev/node-cmd-bcrypt)
 [![Coverage Status](https://coveralls.io/repos/github/rbtdev/node-cmd-bcrypt/badge.svg?branch=master)](https://coveralls.io/github/rbtdev/node-cmd-bcrypt?branch=master)
 
-#node-cmd-bcrypt
+# node-cmd-bcrypt
 A simple utility to hash plaintext arrays or line delimited text files into bcrypt hashes.  Provides both
 a utility for command line use, and a module function for use in your application.
 The command line utility reads from stdin and outputs to stdout, and includes several options for specifying
 bcrypt complexity, and inclusion of the plaintext in the output. Easily used as a 'pipe' to process the 
-output of other commands.  The function accepts an array of strings, and an options object.
+output of other commands.  The function accepts an array of strings and an options object.
 
-##Usage
-###Command Line Utility
+## Usage
+### Command Line Utility
 ```
 $ npm install -g @rbtdev/node-cmd-bcrypt
 
@@ -20,7 +20,7 @@ $ passwdjs --help
 
   Commands:
 
-    hash [options] [passwords...]  Uses bcryptjs to hash each passoword provided or reads lines from stdin if no passwords are provided.
+    hash [options] [passwords...]  Uses bcryptjs to hash each password provided or reads lines from stdin if no passwords are provided.
 
   Command line tool to hash and compare bcrypt passwords.
 
@@ -66,13 +66,13 @@ $ passwdjs --help
     $ echo "password" | passwdjs hash -r 15
     $2a$15$mT4C4CHQuTcumZG74JlGhen2e.b9yAWVtIFREq9Pge6dDXUkHiZPG
 ```
-###As a required module
+### As a required module
 
-####Installation
+#### Installation
 ```js
 $ npm install --save @rbtdev/node-cmd-bcrypt
 ```
-Hash an array of passwords, and return results in an object
+##### Hash an array of passwords, and return results in an object
 
 ```js
 var passwdjs = require('@rbtdev/node-cmd-bcrypt');
@@ -111,7 +111,7 @@ function doSomethingWithError(err) {
     console.log(err);
 }
 ```
-Hash a file of passwords (one per line) and return results in an array
+##### Hash a file of passwords (one per line) and return results in an array
 
 ```js
 var passwdjs = require('@rbtdev/node-cmd-bcrypt');
@@ -143,7 +143,7 @@ function doSomethingWithError(err) {
     console.log(err);
 }
 ```
-Hash a file of passwords (one per line) and return results in an object
+##### Hash a file of passwords (one per line) and return results in an object
 
 ```js
 var passwdjs = require('@rbtdev/node-cmd-bcrypt');
