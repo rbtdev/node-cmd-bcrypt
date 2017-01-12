@@ -10,15 +10,14 @@ function passwdjs(arg, options) {
     if (typeof arg === 'string') {
         try {
             lines = fs.readFileSync(arg).toString().split('\n');
-        }
-        catch (ex) {
+            lines.splice(lines.length - 1, 1);
+        } catch (ex) {
             setImmediate(function () {
                 e.emit("error", ex)
             });
             return e;
         }
-    }
-    else lines = Array.isArray(arg) ? arg : [].push(arg);
+    } else lines = Array.isArray(arg) ? arg : [].push(arg);
     var opts = options ? options : {
         rounds: 10,
         json: false
@@ -36,7 +35,6 @@ function passwdjs(arg, options) {
     })
 
     function hash(line, cb) {
-        if (line.length === 0) return async.setImmediate(cb, null, null);
         bcrypt.genSalt(opts.rounds, function (err, salt) {
             if (err) return cb(err);
             bcrypt.hash(line, salt, function (err, hashed) {

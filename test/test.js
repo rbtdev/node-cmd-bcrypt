@@ -10,14 +10,18 @@ var hashLines = null;
 var hashResult = null;
 var lineCount = 0;
 var arg = null;
+var errorObj = null;
 
 
 describe("hash array of passwords, emit line event", function (done) {
     before(function (done) {
-        reset(false, false);
+        reset({
+            file: false,
+            json: false,
+            error: false
+        });
         run(done);
     })
-
     it("Should emit a 'line' event for each password", function () {
         expect(hash).to.be.a.string;
         expect(lineCount).to.equal(arg.length);
@@ -39,7 +43,11 @@ describe("hash array of passwords, emit line event", function (done) {
 
 describe("hash file of passwords, emit line event", function (done) {
     before(function (done) {
-        reset(false, false);
+        reset({
+            file: true,
+            json: false,
+            error: false
+        });
         run(done);
     })
 
@@ -64,7 +72,11 @@ describe("hash file of passwords, emit line event", function (done) {
 
 describe("hash array of passwords, return json obj", function (done) {
     before(function (done) {
-        reset(false, true);
+        reset({
+            file: false,
+            json: true,
+            error: false
+        });
         run(done);
     })
 
@@ -89,13 +101,16 @@ describe("hash array of passwords, return json obj", function (done) {
 
 describe("hash file of passwords, return json obj", function (done) {
     before(function (done) {
-        reset(true, true);
+        reset({
+            file: true,
+            json: true,
+            error: false
+        });
         run(done);
     })
 
     it("Should emit a 'done' event", function () {
         expect(doneEvent).to.be.true;
-
     });
 
     it("Should return an object", function () {
@@ -111,11 +126,27 @@ describe("hash file of passwords, return json obj", function (done) {
         })
 });
 
+describe("handle errors gracefully", function (done) {
+    before(function (done) {
+        reset({
+            file: true,
+            json: true,
+            error: true
+        })
+        run(done);
+    })
+    it("Should emit an error event for file error", function () {
+        expect(errorEvent).to.be.true;
+        expect(errorObj).to.be.an.object;
+        expect(errorObj).to.have.property('code').equals('ENOENT');
+    })
+})
 
 function run(done) {
     passwdjs(arg, opts)
         .on('line', gotLine)
-        .on('done', gotDone);
+        .on('done', gotDone)
+        .on('error', gotError)
 
     function gotLine(line) {
         hashLines.push(line);
@@ -128,17 +159,21 @@ function run(done) {
         done();
     }
 
+    function gotError(err) {
+        errorEvent = true;
+        errorObj = err;
+        done();
+    }
 }
 
-
-function reset(file, json) {
+function reset(options) {
     lineEvent = false;
     doneEvent = false;
     hash = null;
     hashLines = [];
     hashResult = null;
     lineCount = 0;
-    
+
     arg = [
         'passwd1',
         'passwd2',
@@ -148,8 +183,9 @@ function reset(file, json) {
     opts = {
         rounds: 10,
         plaintext: false,
-        json: json
+        json: options.json
     }
 
-    if (file) arg = 'test/test.txt';
+    if (options.file) arg = 'test/test.txt';
+    if (options.file && options.error) arg = "xxxxxxx";
 }
