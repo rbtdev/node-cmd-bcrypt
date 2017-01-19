@@ -1,8 +1,9 @@
 var execFile = require('child_process').execFile;
+var spawn = require('child_process').spawn
 var bcrypt = require('bcryptjs');
 var chai = require('chai');
 var expect = chai.expect;
-var passwdjs = "./bin/passwdjs.js";
+var passwdjs = require('../bin/passwdjs.js');
 
 var errObj = null;
 var outStr = null;
@@ -70,7 +71,7 @@ function reset(options) {
     errStr = null;
     optObj = options;
 
-    args = ['hash'];
+    args = ["", "", 'hash'];
     if (options.password) args.push(options.password);
     if (options.file) {
         args.push('-f');
@@ -82,12 +83,14 @@ function reset(options) {
 }
 
 function run(done) {
-    execFile(passwdjs, args, function (err, stdout, stderr) {
-        errObj = err;
-        outStr = stdout;
-        errStr = stderr;
+    var stdout = {}
+    stdout.write = function (data) {
+        outStr = data;
         if (optObj.json) hashes = JSON.parse(outStr);
         else hashes = outStr.split('\n');
         done()
+    }
+    passwdjs(args, {
+        stdout: stdout
     })
 }
